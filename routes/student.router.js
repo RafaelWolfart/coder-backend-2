@@ -25,11 +25,9 @@ router.post("/", authenticateJWT, isAdmin, async (req, res) => {
     email = String(email).trim().toLowerCase();
     const emailInUse = await Student.exists({ email });
     if (emailInUse) {
-      res
-        .status(400)
-        .json({
-          error: `El email ${email} ya esta en uso por otro estudiante`,
-        });
+      res.status(400).json({
+        error: `El email ${email} ya esta en uso por otro estudiante`,
+      });
     }
 
     const student = new Student({ name, email, age });
@@ -72,11 +70,9 @@ router.put("/:id", authenticateJWT, isAdmin, async (req, res) => {
     email = String(email).trim().toLowerCase();
     const emailInUse = await Student.exists({ email });
     if (emailInUse) {
-      res
-        .status(400)
-        .json({
-          error: `El email ${email} ya esta en uso por otro estudiante`,
-        });
+      res.status(400).json({
+        error: `El email ${email} ya esta en uso por otro estudiante`,
+      });
     }
     const student = await Student.findByIdAndUpdate(req.params.id, req.body, {
       new: true,

@@ -2,15 +2,11 @@ import express from "express";
 import logger from "./middlewares/logger.middleware.js";
 import passport from "./config/passport.config.js";
 import config from "./config/env.config.js";
-import {
-  connectMongoDB,
-  connectMongoAtlasDB,
-} from "./config/db/connect.config.js";
+import { connectMongoDB } from "./config/db/connect.config.js";
 import apiRouter from "./routes/index.js";
 
 const app = express();
 const PORT = config.port;
-const ATLAS = false;
 
 // Middlewares
 app.use(express.json());
@@ -38,11 +34,11 @@ app.use((err, req, res, next) => {
 
 const startServer = async () => {
   try {
-    ATLAS ? await connectMongoAtlasDB() : await connectMongoDB();
+    await connectMongoDB();
     app.listen(PORT, () =>
       console.log(
-        `✅ Servidor escuchando en http://localhost:${PORT} - Env: ${config.nodeEnv}`
-      )
+        `✅ Servidor escuchando en http://localhost:${PORT} - Env: ${config.nodeEnv}`,
+      ),
     );
   } catch (err) {
     console.error("Error al iniciar el servidor:", err);

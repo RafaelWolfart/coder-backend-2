@@ -1,5 +1,5 @@
-import mongoose from 'mongoose';
-import bcrypt from 'bcrypt';
+import mongoose from "mongoose";
+import bcrypt from "bcrypt";
 
 const userSchema = new mongoose.Schema(
   {
@@ -19,7 +19,10 @@ const userSchema = new mongoose.Schema(
       unique: true,
       lowercase: true,
       trim: true,
-      match: [/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/, 'Por favor ingresa un email válido'],
+      match: [
+        /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/,
+        "Por favor ingresa un email válido",
+      ],
     },
     age: {
       type: Number,
@@ -31,22 +34,22 @@ const userSchema = new mongoose.Schema(
     },
     cart: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'Cart',
+      ref: "Cart",
       default: null,
     },
     role: {
       type: String,
-      enum: ['user', 'admin', 'moderator'],
-      default: 'user',
+      enum: ["user", "admin", "moderator"],
+      default: "user",
     },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 // Middleware para encriptar contraseña antes de guardar
-userSchema.pre('save', async function (next) {
-  if (!this.isModified('password')) return next();
-  
+userSchema.pre("save", async function (next) {
+  if (!this.isModified("password")) return next();
+
   try {
     const salt = await bcrypt.genSalt(10);
     this.password = await bcrypt.hash(this.password, salt);
@@ -67,4 +70,4 @@ userSchema.methods.toJSON = function () {
   return user;
 };
 
-export const User = mongoose.model('User', userSchema);
+export const User = mongoose.model("User", userSchema);

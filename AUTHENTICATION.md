@@ -44,11 +44,13 @@ server-backend-2/
 ## Instalación
 
 1. **Instalar dependencias**:
+
 ```bash
 npm install
 ```
 
 2. **Configurar variables de entorno** (.env):
+
 ```
 PORT=8000
 MONGODB_URI=mongodb://127.0.0.1:27017/backend77080
@@ -59,6 +61,7 @@ NODE_ENV=development
 ```
 
 3. **Asegurar que MongoDB esté corriendo**:
+
 ```bash
 # En Windows
 net start MongoDB
@@ -75,11 +78,13 @@ mongod
 ### Iniciar el servidor
 
 **Modo development** (con nodemon):
+
 ```bash
 npm run dev
 ```
 
 **Modo production**:
+
 ```bash
 npm start
 ```
@@ -91,6 +96,7 @@ El servidor estará disponible en `http://localhost:8000`
 ### Autenticación (`/sessions`)
 
 #### Registrar nuevo usuario
+
 ```
 POST /sessions/register
 Content-Type: application/json
@@ -121,6 +127,7 @@ Response (201):
 ```
 
 #### Login
+
 ```
 POST /sessions/login
 Content-Type: application/json
@@ -144,6 +151,7 @@ Response (200):
 ```
 
 #### Obtener usuario actual
+
 ```
 GET /sessions/current
 Authorization: Bearer <tu_token_jwt>
@@ -168,6 +176,7 @@ Response (200):
 ### Usuarios (`/api/users`)
 
 #### Obtener todos los usuarios (Solo Admin)
+
 ```
 GET /api/users
 Authorization: Bearer <token_admin>
@@ -180,6 +189,7 @@ Response (200):
 ```
 
 #### Obtener usuario por ID
+
 ```
 GET /api/users/:id
 Authorization: Bearer <token_jwt>
@@ -192,6 +202,7 @@ Response (200):
 ```
 
 #### Crear usuario (Solo Admin)
+
 ```
 POST /api/users
 Authorization: Bearer <token_admin>
@@ -208,6 +219,7 @@ Content-Type: application/json
 ```
 
 #### Actualizar usuario
+
 ```
 PUT /api/users/:id
 Authorization: Bearer <token_jwt>
@@ -220,6 +232,7 @@ Content-Type: application/json
 ```
 
 #### Eliminar usuario (Solo Admin)
+
 ```
 DELETE /api/users/:id
 Authorization: Bearer <token_admin>
@@ -228,12 +241,14 @@ Authorization: Bearer <token_admin>
 ### Estudiantes (`/api/students`)
 
 #### Obtener todos los estudiantes (Requiere autenticación)
+
 ```
 GET /api/students
 Authorization: Bearer <token_jwt>
 ```
 
 #### Crear estudiante (Solo Admin)
+
 ```
 POST /api/students
 Authorization: Bearer <token_admin>
@@ -247,6 +262,7 @@ Content-Type: application/json
 ```
 
 #### Actualizar estudiante (Solo Admin)
+
 ```
 PUT /api/students/:id
 Authorization: Bearer <token_admin>
@@ -258,6 +274,7 @@ Content-Type: application/json
 ```
 
 #### Eliminar estudiante (Solo Admin)
+
 ```
 DELETE /api/students/:id
 Authorization: Bearer <token_admin>
@@ -282,16 +299,19 @@ Authorization: Bearer <token_admin>
 ## Estrategias de Passport
 
 ### 1. LocalStrategy ('login')
+
 - Usada para autenticar usuarios con email y contraseña
 - Compara la contraseña ingresada con la almacenada en la BD
 - Retorna el usuario si las credenciales son válidas
 
 ### 2. JWTStrategy ('jwt')
+
 - Valida el token JWT en las peticiones autenticadas
 - Extrae el token del header Authorization como Bearer Token
 - Retorna el usuario asociado al token
 
 ### 3. Current Strategy ('current')
+
 - Similar a JWTStrategy pero diseñada específicamente para obtener el usuario actual
 - Usada en el endpoint /api/sessions/current
 
@@ -320,23 +340,25 @@ const esValida = await usuario.comparePassword("micontraseña");
 
 ## Variables de Entorno
 
-| Variable | Descripción | Default |
-|----------|-------------|---------|
-| PORT | Puerto del servidor | 8000 |
-| MONGODB_URI | URI de MongoDB local | mongodb://127.0.0.1:27017/backend77080 |
-| MONGODB_ATLAS_URI | URI de MongoDB Atlas | - |
-| JWT_SECRET | Clave secreta para firmar JWT | configurar en producción |
-| JWT_EXPIRE | Tiempo de expiración del JWT | 24h |
-| NODE_ENV | Ambiente (development/production) | development |
+| Variable          | Descripción                       | Default                                |
+| ----------------- | --------------------------------- | -------------------------------------- |
+| PORT              | Puerto del servidor               | 8000                                   |
+| MONGODB_URI       | URI de MongoDB local              | mongodb://127.0.0.1:27017/backend77080 |
+| MONGODB_ATLAS_URI | URI de MongoDB Atlas              | -                                      |
+| JWT_SECRET        | Clave secreta para firmar JWT     | configurar en producción               |
+| JWT_EXPIRE        | Tiempo de expiración del JWT      | 24h                                    |
+| NODE_ENV          | Ambiente (development/production) | development                            |
 
 ## Roles y Permisos
 
 ### User (por defecto)
+
 - Ver su propio perfil
 - Editar su propio perfil
 - Ver lista de estudiantes
 
 ### Admin
+
 - Ver todos los usuarios
 - Crear, editar y eliminar usuarios
 - Crear, editar y eliminar estudiantes
@@ -344,6 +366,7 @@ const esValida = await usuario.comparePassword("micontraseña");
 - Cambiar su propio rol
 
 ### Moderator
+
 - Similar a user, con acceso a funciones de moderación (si se implementan)
 
 ## Manejo de Errores
@@ -359,6 +382,7 @@ El servidor incluye manejo centralizado de errores:
 ## Ejemplo de Flujo Completo
 
 1. **Registrar usuario**:
+
 ```bash
 curl -X POST http://localhost:8000/sessions/register \
   -H "Content-Type: application/json" \
@@ -372,6 +396,7 @@ curl -X POST http://localhost:8000/sessions/register \
 ```
 
 2. **Login y obtener token**:
+
 ```bash
 curl -X POST http://localhost:8000/sessions/login \
   -H "Content-Type: application/json" \
@@ -382,12 +407,14 @@ curl -X POST http://localhost:8000/sessions/login \
 ```
 
 3. **Usar token para obtener usuario actual**:
+
 ```bash
 curl -X GET http://localhost:8000/sessions/current \
   -H "Authorization: Bearer eyJhbGciOi..."
 ```
 
 4. **Obtener usuario específico**:
+
 ```bash
 curl -X GET http://localhost:8000/api/users/USER_ID \
   -H "Authorization: Bearer eyJhbGciOi..."

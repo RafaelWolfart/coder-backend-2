@@ -4,11 +4,15 @@ dotenv.config();
 
 export const config = {
   port: process.env.PORT || 8000,
-  mongoURI: process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/backend77080',
-  mongoAtlasURI: process.env.MONGODB_ATLAS_URI,
-  jwtSecret: process.env.JWT_SECRET || 'tu_clave_secreta_super_segura_aqui',
-  jwtExpire: process.env.JWT_EXPIRE || '24h',
+  mongoURL: process.env.MONGO_URL || 'mongodb://127.0.0.1:27017/backend77080',
+  mongoAtlasURL: process.env.MONGO_ATLAS_URL,
+  mongoTarget: process.env.MONGO_TARGET || 'LOCAL',
+  jwtSecret: process.env.JWT_SECRET || 'clave_secreta_jwt',
+  secretSession: process.env.SECRET_SESSION || 'clave_secreta',
   nodeEnv: process.env.NODE_ENV || 'development',
+  githubClientId: process.env.GITHUB_CLIENT_ID,
+  githubClientSecret: process.env.GITHUB_CLIENT_SECRET,
+  githubCallbackUrl: process.env.GITHUB_CALLBACK_URL,
 };
 
 export default config;
