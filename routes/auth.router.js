@@ -15,12 +15,10 @@ router.post("/register", async (req, res) => {
 
     // Validar campos requeridos
     if (!first_name || !last_name || !email || !age || !password) {
-      return res
-        .status(400)
-        .json({
-          message:
-            "Todos los campos son requeridos (first_name, last_name, email, age, password)",
-        });
+      return res.status(400).json({
+        message:
+          "Todos los campos son requeridos (first_name, last_name, email, age, password)",
+      });
     }
 
     // Verificar si el email ya está registrado
